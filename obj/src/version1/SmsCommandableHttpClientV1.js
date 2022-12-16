@@ -9,15 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SmsDirectClientV1 = void 0;
+exports.SmsCommandableHttpClientV1 = void 0;
 const pip_services3_commons_nodex_1 = require("pip-services3-commons-nodex");
-const pip_services3_commons_nodex_2 = require("pip-services3-commons-nodex");
 const pip_services3_rpc_nodex_1 = require("pip-services3-rpc-nodex");
-//import { ISmsController } from 'service-sms-node';
-class SmsDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
+class SmsCommandableHttpClientV1 extends pip_services3_rpc_nodex_1.CommandableHttpClient {
     constructor(config) {
-        super();
-        this._dependencyResolver.put('controller', new pip_services3_commons_nodex_2.Descriptor("service-sms", "controller", "*", "*", "*"));
+        super('v1/sms');
         let thisConfig = pip_services3_commons_nodex_1.ConfigParams.fromValue(config);
         this._defaultParameters = thisConfig.getSection('parameters');
         if (config != null)
@@ -26,21 +23,32 @@ class SmsDirectClientV1 extends pip_services3_rpc_nodex_1.DirectClient {
     sendMessage(correlationId, message, parameters) {
         return __awaiter(this, void 0, void 0, function* () {
             parameters = this._defaultParameters.override(parameters);
-            yield this._controller.sendMessage(correlationId, message, parameters);
+            yield this.callCommand('send_message', correlationId, {
+                message: message,
+                parameters: parameters
+            });
         });
     }
     sendMessageToRecipient(correlationId, recipient, message, parameters) {
         return __awaiter(this, void 0, void 0, function* () {
             parameters = this._defaultParameters.override(parameters);
-            yield this._controller.sendMessageToRecipient(correlationId, recipient, message, parameters);
+            yield this.callCommand('send_message_to_recipient', correlationId, {
+                recipient: recipient,
+                message: message,
+                parameters: parameters
+            });
         });
     }
     sendMessageToRecipients(correlationId, recipients, message, parameters) {
         return __awaiter(this, void 0, void 0, function* () {
             parameters = this._defaultParameters.override(parameters);
-            yield this._controller.sendMessageToRecipients(correlationId, recipients, message, parameters);
+            yield this.callCommand('send_message_to_recipients', correlationId, {
+                recipients: recipients,
+                message: message,
+                parameters: parameters
+            });
         });
     }
 }
-exports.SmsDirectClientV1 = SmsDirectClientV1;
-//# sourceMappingURL=SmsDirectClientV1.js.map
+exports.SmsCommandableHttpClientV1 = SmsCommandableHttpClientV1;
+//# sourceMappingURL=SmsCommandableHttpClientV1.js.map

@@ -6,7 +6,7 @@ import { ConsoleLogger } from 'pip-services3-components-nodex';
 import { SmsController } from 'service-sms-node';
 import { SmsHttpServiceV1 } from 'service-sms-node';
 
-import { SmsHttpClientV1 } from '../../src/version1/SmsHttpClientV1';
+import { SmsCommandableHttpClientV1 } from '../../src/version1/SmsCommandableHttpClientV1';
 import { SmsClientFixtureV1 } from './SmsClientFixtureV1';
 
 var httpConfig = ConfigParams.fromTuples(
@@ -15,9 +15,9 @@ var httpConfig = ConfigParams.fromTuples(
     "connection.port", 3000
 );
 
-suite('SmsHttpClientV1', ()=> {
+suite('SmsCommandableHttpClientV1', ()=> {
     let service: SmsHttpServiceV1;
-    let client: SmsHttpClientV1;
+    let client: SmsCommandableHttpClientV1;
     let fixture: SmsClientFixtureV1;
 
     suiteSetup(async () => {
@@ -31,12 +31,12 @@ suite('SmsHttpClientV1', ()=> {
         let references: References = References.fromTuples(
             new Descriptor('pip-services', 'logger', 'console', 'default', '1.0'), logger,
             new Descriptor('service-sms', 'controller', 'default', 'default', '1.0'), controller,
-            new Descriptor('service-sms', 'service', 'http', 'default', '1.0'), service
+            new Descriptor('service-sms', 'service', 'commandable-http', 'default', '1.0'), service
         );
         controller.setReferences(references);
         service.setReferences(references);
 
-        client = new SmsHttpClientV1();
+        client = new SmsCommandableHttpClientV1();
         client.setReferences(references);
         client.configure(httpConfig);
 
